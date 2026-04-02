@@ -1,10 +1,14 @@
 
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Raycast : MonoBehaviour
 {
     [SerializeField] private Transform _originTransform;
+    [SerializeField] private float _maxAmmo = 30f;
+    [SerializeField] private float _currentAmmo = 30f;
+    
     public GameObject _fire;
     public GameObject _hitPoint;
 
@@ -13,8 +17,16 @@ public class Raycast : MonoBehaviour
         Shooting();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void Shooting()
     {
+        if (Input.GetKey(KeyCode.R))
+        {
+            _currentAmmo = _maxAmmo;
+        }
+        
+        if (_currentAmmo == 0) return;
+        
         Debug.DrawRay(_originTransform.position, _originTransform.forward * 100, Color.yellow);
         if (Input.GetButtonDown("Fire1")) {
             Ray ray = new Ray(_originTransform.position, _originTransform.forward);
@@ -29,7 +41,17 @@ public class Raycast : MonoBehaviour
             Destroy(a, 0.2f);
             Destroy(b, 2f);
         }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            _currentAmmo--;
+        }
+       
+       
+        
     }
+
+    
 
 }
 

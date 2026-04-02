@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5c7b7da52f17cf04dad775fe29861702
+guid: cd64f7b4ec6a1ab419b5681847fd5d62
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -42,8 +42,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0

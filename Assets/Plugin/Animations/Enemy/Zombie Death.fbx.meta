@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 830751f91cb6ea44fb6c66d8f9fa01eb
+guid: f1e39e019d7bf6a4dae57d50dccdde43
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Zombie Death
+      name: zombie death
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
@@ -42,8 +42,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0

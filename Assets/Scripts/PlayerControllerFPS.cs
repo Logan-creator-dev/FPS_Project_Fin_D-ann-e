@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerControllerFPS : MonoBehaviour
@@ -18,7 +19,15 @@ public class PlayerControllerFPS : MonoBehaviour
     
     private float _yLook;
     private float _xLook;
-        
+
+    private float _mouseX;
+    private float _mouseY;
+
+    private Vector3 _bodyRotation;
+
+    private float _horizontal;
+    private float _vertical;
+    
     private void Awake(){
         _animator = GetComponent<Animator>();
     }
@@ -27,30 +36,30 @@ public class PlayerControllerFPS : MonoBehaviour
         
         // Input
         //Mouse
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
-        
-        Vector3 bodyRotation = new Vector3(0 , mouseX, 0) * (_rotationSpeed * Time.deltaTime);
-        
-        transform.Rotate(bodyRotation);
+        _mouseX = Input.GetAxis("Mouse X");
+        _mouseY = Input.GetAxis("Mouse Y");
         
         //Keyboard
-        float vertical = Input.GetAxis("Vertical");
-        float horizontal = Input.GetAxis("Horizontal");
+        _vertical = Input.GetAxis("Vertical");
+        _horizontal = Input.GetAxis("Horizontal");
             
         // Animation
-        _animator.SetFloat("Vertical", vertical);
-        _animator.SetFloat("Horizontal", horizontal);
-            
+        _animator.SetFloat("Vertical", _vertical);
+        _animator.SetFloat("Horizontal", _horizontal);
+    }
+
+    private void FixedUpdate()
+    {
         // Movement
-        transform.Translate(horizontal * Time.deltaTime * _speed, 0, vertical * Time.deltaTime * _speed);
-            
-        //  Camera Rotation
+        transform.Translate(_horizontal * Time.deltaTime * _speed, 0, _vertical * Time.deltaTime * _speed);
         
-        _cameraPitch -= mouseY * _rotationSpeed * Time.deltaTime;
+        _bodyRotation = new Vector3(0 , _mouseX, 0) * (_rotationSpeed * Time.deltaTime);
+        transform.Rotate(_bodyRotation);
+        
+        //  Camera Rotation
+        _cameraPitch -= _mouseY * _rotationSpeed * Time.deltaTime;
         _cameraPitch = Mathf.Clamp(_cameraPitch, _xMinAngle, _xMaxAngle);
         _cameraTransform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
-        
     }
 
     private float ClampAngle(float angle, float from, float to){
