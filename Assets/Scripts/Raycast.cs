@@ -9,13 +9,16 @@ public class Raycast : MonoBehaviour
     [SerializeField] private float _maxAmmo = 30f;
     [SerializeField] private float _currentAmmo = 30f;
     [SerializeField] private Transform _originTransform;
+    [SerializeField] private Transform _cameraTransform;
     private float _reloadTime = 2f;
     private float _reloadTimer;
+    private bool _autoShoot = false;
     private bool _reloading;
+
 
     public GameObject _fire;
     public GameObject _hitPoint;
-    
+
 
     private void Update()
     {
@@ -24,7 +27,7 @@ public class Raycast : MonoBehaviour
 
     public void Shooting()
     {
-        
+
         // reload with R
         if (Input.GetKey(KeyCode.R) && !_reloading)
         {
@@ -41,15 +44,13 @@ public class Raycast : MonoBehaviour
                 _currentAmmo = _maxAmmo;
             }
         }
-
         // stop shoot if ammo = 0
         else if (_currentAmmo == 0) return;
 
-        // create raycast
-        Debug.DrawRay(_originTransform.position, _originTransform.forward * 100, Color.yellow);
+        Debug.DrawRay(_cameraTransform.position, _cameraTransform.forward * 100, Color.yellow);
         if (Input.GetButtonDown("Fire1"))
         {
-            Ray ray = new Ray(_originTransform.position, _originTransform.forward);
+            Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
 
             //Damage if enemy are hit
             if (Physics.Raycast(ray, out RaycastHit hit))
@@ -61,21 +62,17 @@ public class Raycast : MonoBehaviour
             // particles effects 
             GameObject a = Instantiate(_fire, _originTransform.position, _originTransform.rotation, _originTransform);
             GameObject b = Instantiate(_hitPoint, hit.point, Quaternion.LookRotation(hit.normal));
-            
+
             // destroy particles effects after time
             Destroy(a, 0.2f);
             Destroy(b, 2f);
-        }
 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            _currentAmmo--;
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                _currentAmmo--;
+            }
         }
-        
-       
     }
-    
 }
-
-
 
