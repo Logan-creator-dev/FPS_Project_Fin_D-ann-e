@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerControllerFPS : MonoBehaviour
 {
@@ -11,21 +12,28 @@ public class PlayerControllerFPS : MonoBehaviour
     [SerializeField] private float _xMaxAngle = 30;
     [SerializeField] private float _xMinAngle = -45;
     [SerializeField] private float _rotationSpeed = 1400;
+    
+    [Header("Health")]
     [SerializeField] private float _maxHealth = 100;
      public float _currentHealth = 100;
+     private float _durationTimer;
+     public Image overlay;
+     public float overlayDuration;
+     public float fadeSpeed;
 
     private Animator _animator;
+    
     private Vector3 _move;
-    private float _cameraPitch;
+    private Vector3 _bodyRotation;
+    
 
     private float _yLook;
     private float _xLook;
 
     private float _mouseX;
     private float _mouseY;
-
-    private Vector3 _bodyRotation;
-
+    private float _cameraPitch;
+    
     private float _horizontal;
     private float _vertical;
 
@@ -37,10 +45,13 @@ public class PlayerControllerFPS : MonoBehaviour
     private void Start()
     {
         _currentHealth  = _maxHealth;
+        //HealthUI
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0f);
     }
 
     private void Update()
     {
+        TakeDamage();
         // Input
         //Mouse
         _mouseX = Input.GetAxis("Mouse X");
@@ -64,6 +75,22 @@ public class PlayerControllerFPS : MonoBehaviour
         
         //_cameraTransform.Rotate(_cameraTransform.localEulerAngles - new Vector3(0, _cameraPitch, 0f));
         _cameraTransform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+        
+        // healthUI
+        if (_currentHealth < 100)
+        {
+            if (overlay.color.a >= 0f)
+            {
+                _durationTimer += Time.deltaTime;
+                if (_durationTimer >= overlayDuration)
+                {
+                    float tempAlpha = overlay.color.a;
+                    tempAlpha -= Time.deltaTime * fadeSpeed;
+                    overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
+                }
+            }
+        }
+       
     }
 
     private void FixedUpdate()
@@ -79,5 +106,11 @@ public class PlayerControllerFPS : MonoBehaviour
         if (angle > 180f) return Mathf.Max(angle, 360 + from);
         return Mathf.Min(angle, to);
     }
-    
+
+    private void TakeDamage()
+    {
+        //HealthUI
+        _durationTimer = 0f;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);
+    }
 }
